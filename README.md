@@ -1,10 +1,8 @@
 # myPlaylist
-Proiect web tech
+# Ruxandra Bostaca
+This app allows you to manage playlists of Youtube videos.
 
-#Ruxandra Bostaca
-#Manager videoclipuri favorite integrat cu Youtube
-
-Componente:
+##Components:
 1. List of Video playlists
 2. Selected Video playlist - details
 3. Video Search
@@ -12,7 +10,7 @@ Componente:
 5. New playlist button
 6. Remove playlist(s) button
 
-User components:
+##User components:
 View list of playlists
 View specific playlist + Edit playlist (remove videos, reorder)
 Search videos by name
@@ -20,12 +18,12 @@ Search results - add to playlist(s)
 New playlist
 Delete playlist(s)
 
-Apeluri API:
+##Endpoints:
 POST /playlists
 GET /playlists
 GET /playlists/:id
-POST /playlists/:id
 PUT /playlists/:id
 PUT /playlists/:id/:videoId
 GET /search.list (API)
+DELETE /playlists/:id
 ...
