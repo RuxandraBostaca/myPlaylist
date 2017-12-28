@@ -1,0 +1,98 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.thumbnail{
+  display: inline-block;
+  position: relative;
+  margin-right: 20px;
+}
+
+.video{
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid;
+  border-color: #28a4c9;
+  margin-top: 20px;
+  
+}
+
+.videoDetails {
+  display: flex;
+  flex-direction: column;
+}
+
+img{
+  width: 192px;
+  height: 108px;
+}
+
+.videoTitle {
+  display: block;
+  overflow: hidden;
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: #d88e00;
+  line-height: 2.4rem;
+  text-decoration: none;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-top: 10px;
+  padding-bottom: 30px;
+  width:500px;
+}
+
+.channelTitle{
+  overflow: hidden;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: #d88e00;
+  line-height: 1.8rem;
+  text-decoration: none;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.searchResults {
+  padding: 10px 10px 10px 10px;
+  height: 300px;
+}
+
+.searchbar{
+  display: flex;
+}
+
+.space{
+  margin-bottom: 20px !important;
+}
+
+.blue_border {
+  border: 2px solid;
+  border-color: #28a4c9;
+}

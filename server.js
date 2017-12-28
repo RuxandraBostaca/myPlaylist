@@ -1,6 +1,26 @@
 var express = require("express")
 var Sequelize = require("sequelize")
 var app = express()
+app.set('view engine', 'hjs');
+
+app.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+}); 
 
 //connect to mysql database
 var sequelize = new Sequelize('myplaylist', 'root', '', {
@@ -29,7 +49,9 @@ var Playlists = sequelize.define('playlists', {
 var Videos = sequelize.define('videos', {
     playlistId: Sequelize.INTEGER,
     title: Sequelize.STRING,
-    link: Sequelize.TEXT,
+    url: Sequelize.TEXT,
+    channelTitle: Sequelize.STRING,
+    channelUrl: Sequelize.TEXT,
     status: Sequelize.INTEGER
 })
 
@@ -61,6 +83,17 @@ app.get('/users', function(request, response) {
 //user by id
 app.get('/users/:id', function(request, response) {
     Users.findById(request.params.id).then(function(user) {
+        if(user) {
+            response.status(200).send(user)
+        } else {
+            response.status(404).send()
+        }
+    })
+})
+
+//user by username and password
+app.get('/users/:user/:pass', function(request, response) {
+    Users.findOne({where: {username: request.params.user, password: request.params.pass}}).then(function(user) {
         if(user) {
             response.status(200).send(user)
         } else {

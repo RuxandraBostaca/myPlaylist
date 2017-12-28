@@ -25,6 +25,10 @@
   "dependencies": {
     "express": "^4.16.2",
     "mysql2": "^1.4.2",
-    "sequelize": "^4.22.5"
+    "sequelize": "^4.22.5",
+    "react": "^16.2.0",
+    "react-bootstrap": "^0.31.5",
+    "youtube-api-search": "^0.0.5",
+    "sfcookies": "^1.0.2"
   }
 }
