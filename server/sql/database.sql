@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `videos` (
     `playlistId` smallint(5) NOT NULL,
     `title` varchar(30) NOT NULL,
     `url` TEXT NOT NULL,
+    `thumbnail` TEXT,
     `channelTitle` varchar(30) NOT NULL,
     `channelUrl` varchar(30) NOT NULL,
     `createdAt` timestamp,

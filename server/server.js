@@ -50,6 +50,7 @@ var Videos = sequelize.define('videos', {
     playlistId: Sequelize.INTEGER,
     title: Sequelize.STRING,
     url: Sequelize.TEXT,
+    thumbnail: Sequelize.TEXT,
     channelTitle: Sequelize.STRING,
     channelUrl: Sequelize.TEXT,
     status: Sequelize.INTEGER
@@ -238,11 +239,11 @@ app.delete('/playlists/:id', function(request, response) {
 
 //videos by playlistId
 app.get('/playlists/:id/videos', function(request, response) {
-    Videos.findAll({where: {playlistId: request.params.id}}).then(function(videos) {
+    Videos.findAll({where: {playlistId: request.params.id, status: 1}}).then(function(videos) {
         if(videos) {
             response.status(200).send(videos)
         } else {
-            response.status(404).send()
+            response.status(204).send()
         }
     })
 })

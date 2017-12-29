@@ -40,6 +40,8 @@ class Modals extends Component {
       this.updateUserRegister = this.updateUserRegister.bind(this);
       this.updatePassRegister = this.updatePassRegister.bind(this);
       this.switchToRegisterModal = this.switchToRegisterModal.bind(this);
+      this.switchToLoginModal = this.switchToLoginModal.bind(this);
+      this.loadListData = this.loadListData.bind(this);
   }
   
   componentDidMount() {
@@ -50,6 +52,10 @@ class Modals extends Component {
     else {
       this.setState({showLoginModal: true});  
     }
+  }
+  
+  loadListData() {
+    this.props.loadData();
   }
   
   checkCredentials(user, pass) {
@@ -63,6 +69,7 @@ class Modals extends Component {
          bake_cookie('user', user);
          bake_cookie('userId', response.data.id);
          this.closeLoginModal();
+         this.loadListData();
          //todo - get data, load it
       } else if(response.status === 204) {
         this.setState({message: "Invalid Credentials"});
@@ -127,6 +134,11 @@ class Modals extends Component {
       this.openRegisterModal();
   }
   
+  switchToLoginModal() {
+      this.closeRegisterModal();
+      this.openLoginModal();
+  }
+  
   newRegistration(email, user, pass) {
     //create new user
     axios.post('https://my-playlist-rux2296.c9users.io/users', {
@@ -150,8 +162,8 @@ class Modals extends Component {
   render() {
     return(
         <div className="static-modal">
-          <Modal show={this.state.showLoginModal} bsSize="small" onHide={() => this.closeLoginModal()}>
-            <Modal.Header closeButton>
+          <Modal show={this.state.showLoginModal} bsSize="small" keyboard={false}>
+            <Modal.Header>
               <Modal.Title>Log In</Modal.Title>
             </Modal.Header>
       
@@ -169,15 +181,15 @@ class Modals extends Component {
             <Modal.Footer>
               <span>
                 Not a member yet?&nbsp;
-                <a href="#" onClick={() => this.switchToRegisterModal()}>Register</a> 
+                <a href="#" onClick={this.switchToRegisterModal}>Register</a> 
                 &nbsp;&nbsp;
               </span>
               <Button bsClass="btn btn-default btn-info" onClick={() => this.checkCredentials(this.state.user, this.state.pass)}>Log In</Button>
             </Modal.Footer>
       
           </Modal>
-          <Modal show={this.state.showRegisterModal} bsSize="small" onHide={this.closeRegisterModal}>
-            <Modal.Header closeButton>
+          <Modal show={this.state.showRegisterModal} bsSize="small" keyboard={false}>
+            <Modal.Header>
               <Modal.Title>Register</Modal.Title>
             </Modal.Header>
       
@@ -196,6 +208,11 @@ class Modals extends Component {
               </form>
             </Modal.Body>
             <Modal.Footer>
+              <span>
+                Have an account?&nbsp;
+                <a href="#" onClick={this.switchToLoginModal}>Log In</a> 
+                &nbsp;&nbsp;
+              </span>
               <Button bsClass="btn btn-default btn-info" 
                     onClick={() => this.newRegistration(this.state.emailRegister, this.state.userRegister, this.state.passRegister)}>Register</Button>
             </Modal.Footer>
@@ -232,9 +249,45 @@ class Video extends Component{
                     <a className="channelTitle" href={"https://www.youtube.com/channel/" + video.snippet.channelId}>{video.snippet.channelTitle}</a>
                   </div>
                 </div>
+                  <button className="button_right space_bottom space_right">
+                      <i className="fa fa-plus-circle fa-2x blue"/>
+                  </button>
+            </div>
+            )
+    }
+    
+}
+
+class PlaylistVideo extends Component{
+    
+    render() {
+        let video = this.props.video;
+        
+        let thumbnail;
+        if(video.thumbnail !== undefined) {
+            thumbnail = video.thumbnail;
+        } else {
+            thumbnail = defaultThumbnail;
+        }
+        
+        return(
+            <div className="video">
+                <div className="thumbnail">
+                    <a href={"https://www.youtube.com/embed/" + video.url}>
+                        <img src={thumbnail} alt="thumbnail"/>
+                    </a>
+                </div>
+                <div className="videoDetails">
+                  <div>
+                    <a className="videoTitle" href={"https://www.youtube.com/embed/" + video.url}>{video.title}</a>
+                  </div>
+                  <div>
+                    <a className="channelTitle" href={"https://www.youtube.com/channel/" + video.channelUrl}>{video.channelTitle}</a>
+                  </div>
+                </div>
                 <div>
                   <button>
-                      <i className="fa fa-plus-circle fa-2x blue"/>
+                      <i className="fa fa-trash fa-lg blue"/>
                   </button>
                 </div>
             </div>
@@ -245,42 +298,61 @@ class Video extends Component{
 
 class List extends Component{
   
-    render() {
-      return(
-        <div>
-          <div className="blue_border space_top flex">
-              <i className="fa fa-bars fa-2x space_sm space_lr blue"/> 
-              <span className="listTitle">Your Playlists</span>
-          </div>
-          <div className="blue_border flex">
-            <ScrollArea speed={0.8}
-                  className="area"
-                  contentClassName="content"
-                  horizontal={false}>
-              {
-                this.props.playlists.map(playlist => (
-                  <a href="#">{playlist.name}</a>)
-                )
-              }
-            </ScrollArea>
-          </div>
+  sendPlaylistId(data) {
+    this.props.setPlaylistId(data);
+  }
+  
+  render() {
+    return(
+      <div className="playlists_container">
+        <div className="blue_border space_top flex">
+            <i className="fa fa-bars fa-2x space_sm space_lr blue"/> 
+            <span className="listTitle">Your Playlists</span>
         </div>
-      );
-    }
+        <div>
+          <ScrollArea speed={0.8}
+                className="list blue_border"
+                contentClassName="content"
+                horizontal={false}>
+            {
+              this.props.playlists.map(playlist => (
+                <div className="playlistTitle" key={playlist.id}>
+                  <i className="fa fa-music fa-2x blue space_lr space_sm"/>
+                  <a className="playlistName" href="#" onClick={() => this.sendPlaylistId(playlist.id)}>{playlist.name}</a>
+                  <button className="button_right space_right">
+                    <i className="fa fa-trash fa-lg blue"/>
+                  </button>
+                </div>)
+              )
+            }
+          </ScrollArea>
+        </div>
+      </div>
+    );
+  }
 }
 
 class Playlist extends Component{
     render() {
-        return( <ScrollArea speed={0.8}
-            className="area"
-            contentClassName="content"
-            horizontal={false}>
-        {
-            this.props.videos.map(video => (
-                <Video key={video.id} video={video}/>)
-            )
-        }
-        </ScrollArea>
+        return( 
+        <div className="videos_container">
+          <div className="blue_border space_top flex">
+              <i className="fa fa-video-camera fa-2x space_sm space_lr blue"/> 
+              <span className="listTitle">Videos</span>
+          </div>
+          <div>
+            <ScrollArea speed={0.8}
+                className="playlist blue_border"
+                contentClassName="content"
+                horizontal={false}>
+            {
+                this.props.videos.map(video => (
+                    <PlaylistVideo key={video.id} video={video}/>)
+                )
+            }
+            </ScrollArea>
+          </div>
+        </div>
         );
     }
     
@@ -311,16 +383,25 @@ class App extends Component {
       playlists: [],
       videos: [],
       results: [],
-      searchTermValue: ""
+      searchTermValue: "",
+      playlistId: 0
     }
     
     this.logout = this.logout.bind(this);
+    this.setVideos = this.setVideos.bind(this);
+    this.loadList = this.loadList.bind(this);
+    this.eraseDataFromBg = this.eraseDataFromBg.bind(this);
   }
   
   componentDidMount() {
     if(read_cookie('user').length > 0 && read_cookie('userId') > 0) {
       //get playlists for user
-      axios.get('https://my-playlist-rux2296.c9users.io/users/' + read_cookie('userId') + '/playlists/all')
+      this.loadList();
+    }
+  }
+  
+  loadList() {
+    axios.get('https://my-playlist-rux2296.c9users.io/users/' + read_cookie('userId') + '/playlists/all')
       .then(response => {
         if(response.status === 200) {
           this.setState({playlists: response.data});
@@ -331,7 +412,22 @@ class App extends Component {
       .catch(error => {
         console.log(error);
       });
-    }
+  }
+  
+  setVideos(playlistId) {
+    console.log('here' + playlistId + 'https://my-playlist-rux2296.c9users.io/playlists/' + playlistId + '/videos');
+    //fetch videos for selected playlist
+    axios.get('https://my-playlist-rux2296.c9users.io/playlists/' + playlistId + '/videos')
+      .then(response => {
+        if(response.status === 200) {
+          this.setState({videos: response.data});
+        } else if(response.status === 204) {
+          //todo - add an "empty" paragraph
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
   
   updateInputValue(evt) {
@@ -347,19 +443,36 @@ class App extends Component {
     
   }  
   
+  eraseDataFromBg() {
+    this.setState({
+      playlists: [],
+      videos: [],
+      results: []
+    });
+  }
+  
   logout() {
       delete_cookie('user');
       delete_cookie('userId');
       this.refs.modals.openLoginModal();
-      //todo - erase data from background
+      this.eraseDataFromBg();
   }
 
   render() {
     return (
       <div>
         <div className="col-md-6">
-          <List playlists={this.state.playlists}/>
-          
+          <div className="name_container space">
+            <div className="flex">
+                <span className="appLogo"><img src="" alt="logo"/></span>
+                <button className="button_right orange logout_btn" onClick={this.logout}>
+                  Logout&nbsp;
+                <i className="fa fa-gear fa-2x vertical_center blue"/>
+              </button>
+            </div>
+          </div>
+          <List playlists={this.state.playlists} setPlaylistId={this.setVideos}/>
+          <Playlist videos={this.state.videos}/>
         </div>
         <div className = "col-md-6">
           <div className="searchbar space">
@@ -372,14 +485,8 @@ class App extends Component {
           <div>
               <SearchResults results={this.state.results} />
           </div>
-          <div className="pull-right space">
-            <button onClick={this.logout}>
-              Logout&nbsp;
-              <i className="fa fa-gear fa-2x"/>
-            </button>
-          </div>
         </div>
-        <Modals ref="modals"/>
+        <Modals ref="modals" loadData={this.loadList}/>
       </div>
     );
   }
