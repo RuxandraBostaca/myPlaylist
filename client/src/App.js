@@ -46,7 +46,6 @@ class Modals extends Component {
   
   componentDidMount() {
     if(read_cookie('user').length > 0 && read_cookie('userId') > 0) {
-      console.log('welcome, ' + read_cookie('user'));
       this.setState({showLoginModal: false});  
     }
     else {
@@ -250,7 +249,7 @@ class Video extends Component{
                   </div>
                 </div>
                   <button className="button_right space_bottom space_right">
-                      <i className="fa fa-plus-circle fa-2x blue"/>
+                      <i className="fa fa-plus-circle fa-2x blue "/>
                   </button>
             </div>
             )
@@ -285,7 +284,7 @@ class PlaylistVideo extends Component{
                     <a className="channelTitle" href={"https://www.youtube.com/channel/" + video.channelUrl}>{video.channelTitle}</a>
                   </div>
                 </div>
-                <div>
+                <div className="button_right space_right_small">
                   <button>
                       <i className="fa fa-trash fa-lg blue"/>
                   </button>
@@ -308,6 +307,9 @@ class List extends Component{
         <div className="blue_border space_top flex">
             <i className="fa fa-bars fa-2x space_sm space_lr blue"/> 
             <span className="listTitle">Your Playlists</span>
+            <button className="button_right space_right_medium">
+              <i className="fa fa-plus-circle fa-2x blue"/>
+            </button>
         </div>
         <div>
           <ScrollArea speed={0.8}
@@ -319,7 +321,10 @@ class List extends Component{
                 <div className="playlistTitle" key={playlist.id}>
                   <i className="fa fa-music fa-2x blue space_lr space_sm"/>
                   <a className="playlistName" href="#" onClick={() => this.sendPlaylistId(playlist.id)}>{playlist.name}</a>
-                  <button className="button_right space_right">
+                  <button className="button_right">
+                    <i className="fa fa-edit fa-lg blue"/>
+                  </button>
+                  <button className="button_right_remove space_right">
                     <i className="fa fa-trash fa-lg blue"/>
                   </button>
                 </div>)
@@ -384,7 +389,8 @@ class App extends Component {
       videos: [],
       results: [],
       searchTermValue: "",
-      playlistId: 0
+      playlistId: 0,
+      usernameTitle: "a"
     }
     
     this.logout = this.logout.bind(this);
@@ -412,6 +418,8 @@ class App extends Component {
       .catch(error => {
         console.log(error);
       });
+      
+    this.setState({usernameTitle: read_cookie('user')});
   }
   
   setVideos(playlistId) {
@@ -447,7 +455,8 @@ class App extends Component {
     this.setState({
       playlists: [],
       videos: [],
-      results: []
+      results: [],
+      usernameTitle: ""
     });
   }
   
@@ -463,9 +472,10 @@ class App extends Component {
       <div>
         <div className="col-md-6">
           <div className="name_container space">
-            <div className="flex">
+            <div className="flex justify">
                 <span className="appLogo"><img src="" alt="logo"/></span>
-                <button className="button_right orange logout_btn" onClick={this.logout}>
+                <span className="listTitle">Welcome, {this.state.usernameTitle}</span>
+                <button className="orange logout_btn" onClick={this.logout}>
                   Logout&nbsp;
                 <i className="fa fa-gear fa-2x vertical_center blue"/>
               </button>
@@ -478,8 +488,8 @@ class App extends Component {
           <div className="searchbar space">
               <input id="searchTerm" className="form-control blue_border" type="text" placeholder = "Search YouTube" 
                   value={this.state.searchTermValue} onChange={evt => this.updateInputValue(evt)}/>
-              <button className="btn btn-default btn-info" onClick={() => this.searchYoutube(this.state.searchTermValue)}>
-                <i className="fa fa-search"/>
+              <button onClick={() => this.searchYoutube(this.state.searchTermValue)}>
+                <i className="fa fa-search fa-lg blue"/>
               </button>
           </div>
           <div>

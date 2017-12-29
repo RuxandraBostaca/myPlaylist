@@ -31,6 +31,7 @@
   display: inline-block;
   position: relative;
   margin-right: 20px;
+  background-color: #28a4c9;
 }
 
 .video{
@@ -155,6 +156,14 @@ button {
   margin-right: 20px;
 }
 
+.space_right_small {
+  margin-right: 10px;
+}
+
+.space_right_medium {
+  margin-right: 17px;
+}
+
 .logout_btn {
   font-size: 1.2em;
 }
@@ -198,6 +207,11 @@ button {
   order: 2;
 }
 
+.button_right_remove{
+  margin-left: 10px;
+  order: 2;
+}
+
 .vertical_center {
   vertical-align: middle;
 }
@@ -208,3 +222,11 @@ button {
 .videos_container {
   height: 60%;
 }*/
+
+#searchTerm {
+  background-image: url('https://www.walldevil.com/wallpapers/a79/background-web-website-sites.jpg');
+}
+
+.justify {
+  justify-content: space-between;
+}
