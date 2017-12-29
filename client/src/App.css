@@ -84,6 +84,15 @@ button {
   text-overflow: ellipsis;
 }
 
+.listTitle {
+  font-size: 2rem;
+  font-weight: 400;
+  color: #d88e00;
+  line-height: 2.8rem;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 .searchResults {
   padding: 10px 10px 10px 10px;
   height: 300px;
@@ -109,4 +118,32 @@ button {
 
 .center {
   align-self: center;
+}
+
+.errorDiv {
+  text-align: center;
+  background-color: #f2dede;
+  border-color: #b32025;
+  color: #b32025;
+  margin-bottom: 10px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+}
+
+.space_sm{
+  margin-bottom: 10px !important;
+  margin-top: 10px !important;
+}
+
+.space_lr {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.space_top {
+  margin-top: 20px;
+}
+
+.flex {
+  display: flex;
 }

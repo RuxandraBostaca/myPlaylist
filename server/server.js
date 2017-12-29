@@ -93,11 +93,11 @@ app.get('/users/:id', function(request, response) {
 
 //user by username and password
 app.get('/users/:user/:pass', function(request, response) {
-    Users.findOne({where: {username: request.params.user, password: request.params.pass}}).then(function(user) {
+    Users.findOne({where: {username: request.params.user, password: request.params.pass, status: 1}}).then(function(user) {
         if(user) {
             response.status(200).send(user)
         } else {
-            response.status(404).send()
+            response.status(204).send()
         }
     })
 })
@@ -159,8 +159,8 @@ app.delete('/users/:id', function(request, response) {
 })*/
 
 //playlists by userId
-app.get('/users/:id/playlists', function(request, response) {
-    Playlists.findAll({where: {userId: request.params.id}}).then(function(playlists) {
+app.get('/users/:id/playlists/all', function(request, response) {
+    Playlists.findAll({where: {userId: request.params.id, status: 1}}).then(function(playlists) {
         if(playlists) {
             response.status(200).send(playlists)
         } else {
