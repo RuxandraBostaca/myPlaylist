@@ -27,11 +27,21 @@
   to { transform: rotate(360deg); }
 }
 
+body {
+  font-family: "Segoe UI";  
+  font-weight: 500;
+}
+
+.scrollarea {
+  background-color: #F3F3F3;  
+  border-radius: 0px 0px 10px 10px;
+}
+
 .thumbnail{
   display: inline-block;
   position: relative;
-  margin-right: 20px;
-  background-color: #28a4c9;
+  margin-right: 2vh;
+  background-color: #8a2f43;
 }
 
 .video{
@@ -39,14 +49,14 @@
   display: flex;
   flex-direction: row;
   border-bottom: 1px solid;
-  border-color: #28a4c9;
-  margin-top: 20px;
+  border-color: #68204e;
+  margin-top: 2vh;
 }
 
 .videoDetails {
   display: flex;
   flex-direction: column;
-  width:400px;
+  width:40vh;
 }
 
 img{
@@ -63,8 +73,7 @@ button {
   display: block;
   overflow: hidden;
   font-size: 1.8rem;
-  font-weight: 400;
-  color: #d88e00;
+  font-weight: 500;
   line-height: 2.4rem;
   text-decoration: none;
   white-space: nowrap;
@@ -76,8 +85,7 @@ button {
 .channelTitle{
   overflow: hidden;
   font-size: 1.3rem;
-  font-weight: 400;
-  color: #d88e00;
+  font-weight: 500;
   line-height: 1.8rem;
   text-decoration: none;
   white-space: nowrap;
@@ -87,7 +95,15 @@ button {
 .listTitle {
   font-size: 2rem;
   font-weight: 400;
-  color: #d88e00;
+  color: #FFFFFF;
+  line-height: 2.8rem;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.welcomeTitle {
+  font-size: 2.2rem;
+  font-weight: 500;
   line-height: 2.8rem;
   margin-top: auto;
   margin-bottom: auto;
@@ -95,7 +111,8 @@ button {
 
 .searchResults {
   padding: 10px 10px 10px 10px;
-  height: 670px;
+  height: 85vh;
+  border-radius: 10px 10px 10px 10px;
 }
 
 .searchbar{
@@ -103,21 +120,25 @@ button {
 }
 
 .space{
-  margin-bottom: 20px !important;
-  margin-top: 20px !important;
+  margin-bottom: 2vh !important;
+  margin-top: 2vh !important;
 }
 
-.blue_border {
-  border: 2px solid;
-  border-color: #28a4c9;
+.border {
+  box-shadow: 0px 1px 7.5px 2.5px rgba(75, 19, 79, 0.25);
+}
+
+.no_border {
+  border-radius: 10px 10px 0px 0px;
+  box-shadow: 0px 1px 7.5px 2.5px rgba(75, 19, 79, 0.25);
 }
 
 .blue {
-  color: #28a4c9;
+  color: #68204e;
 }
 
 .orange{
-  color: #d88e00;
+  color: #8a2f43;
 }
 
 .center {
@@ -145,23 +166,23 @@ button {
 }
 
 .space_top {
-  margin-top: 20px;
+  margin-top: 3vh;
 }
 
 .space_bottom {
-  margin-bottom: 20px;
+  margin-bottom: 3vh;
 }
 
 .space_right {
-  margin-right: 20px;
+  margin-right: 3vh;
 }
 
 .space_right_small {
-  margin-right: 10px;
+  margin-right: 1vh;
 }
 
 .space_right_medium {
-  margin-right: 17px;
+  margin-right: 2vh;
 }
 
 .logout_btn {
@@ -174,8 +195,7 @@ button {
 .playlistName {
   padding: 10px 10px 10px 10px;
   font-size: 1.8rem;
-  font-weight: 400;
-  color: #d88e00;
+  font-weight: 450;
   line-height: 2.5rem;
 }
 
@@ -186,12 +206,12 @@ button {
 }
 
 .list {
-  height: 150px;
+  height: 20vh;
 }
 
 .playlist {
   padding: 10px 10px 10px 10px;
-  height: 396px;
+  height: 49.5vh;
 }
 
 .body {
@@ -201,6 +221,7 @@ button {
 .col-md-6 {
   height: 100%;
 }
+
 
 .button_right{
   margin-left: auto;
@@ -215,18 +236,40 @@ button {
 .vertical_center {
   vertical-align: middle;
 }
-/*.playlists_container {
-   height: 30% !important;
-}
-
-.videos_container {
-  height: 60%;
-}*/
 
 #searchTerm {
-  background-image: url('https://www.walldevil.com/wallpapers/a79/background-web-website-sites.jpg');
+  background-color: #F3F3F3;
+}
+
+#playlistTab {
+  background-image: -moz-linear-gradient( 0deg, rgb(201,75,75) 0%, rgb(75,19,79) 100%);
+  background-image: -webkit-linear-gradient( 0deg, rgb(201,75,75) 0%, rgb(75,19,79) 100%);
+  background-image: -ms-linear-gradient( 0deg, rgb(201,75,75) 0%, rgb(75,19,79) 100%);
+}
+
+#videoTab{ 
+  background-image: -moz-linear-gradient( 0deg, rgb(201,75,75) 0%, rgb(75,19,79) 100%);
+  background-image: -webkit-linear-gradient( 0deg, rgb(201,75,75) 0%, rgb(75,19,79) 100%);
+  background-image: -ms-linear-gradient( 0deg, rgb(201,75,75) 0%, rgb(75,19,79) 100%);
 }
 
 .justify {
   justify-content: space-between;
+}
+
+.white{
+  color: #FFFFFF;
+}
+
+.appLogoImg {
+   width: 20vh !important; 
+   height: auto !important; 
+}
+
+button {
+  outline:none;
+}
+
+.name_container {
+  line-height: 4.8rem;
 }

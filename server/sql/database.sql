@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `playlists` (
 CREATE TABLE IF NOT EXISTS `videos` (
     `id` smallint(5) NOT NULL AUTO_INCREMENT,
     `playlistId` smallint(5) NOT NULL,
-    `title` varchar(30) NOT NULL,
+    `title` varchar(100) NOT NULL,
     `url` TEXT NOT NULL,
     `thumbnail` TEXT,
     `channelTitle` varchar(30) NOT NULL,
