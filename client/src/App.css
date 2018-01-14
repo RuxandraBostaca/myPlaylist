@@ -273,3 +273,12 @@ button {
 .name_container {
   line-height: 4.8rem;
 }
+
+.custom-modal {
+  width: 100vh;
+}
+
+iframe {
+  width: 95vh;
+  height: 80vh;
+}

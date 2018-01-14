@@ -8,10 +8,8 @@ import { Button } from 'react-bootstrap';
 import { FormGroup } from 'react-bootstrap'
 import { ListGroup } from 'react-bootstrap'
 import { ListGroupItem } from 'react-bootstrap'
-import { p } from 'react-bootstrap'
-import axios from 'axios';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
-
+import axios from 'axios';
 
 class Modals extends Component {
   
@@ -26,6 +24,7 @@ class Modals extends Component {
         showAddToPlaylistModal: false,
         showRemoveVideoModal: false, 
         showLogoutModal: false,
+        showPlayVideo: false, 
         user: "",
         pass: "",
         emailRegister: "",
@@ -46,7 +45,9 @@ class Modals extends Component {
         removeVideoId: 0,
         removeVideoPlaylistId: 0,
         playlists: [],
-        toAddVideo: {}
+        toAddVideo: {},
+        playVideoName: "",
+        playVideoUrl: ""
       }
       
       this.openRegisterModal = this.openRegisterModal.bind(this);
@@ -57,6 +58,7 @@ class Modals extends Component {
       this.openRemoveVideoModal = this.openRemoveVideoModal.bind(this);
       this.openAddToPlaylistModal = this.openAddToPlaylistModal.bind(this);
       this.openLogoutModal = this.openLogoutModal.bind(this);
+      this.openPlayVideoModal = this.openPlayVideoModal.bind(this);
       this.closeRegisterModal = this.closeRegisterModal.bind(this);
       this.closeLoginModal = this.closeLoginModal.bind(this);
       this.closeAddPlaylistModal = this.closeAddPlaylistModal.bind(this);
@@ -65,6 +67,7 @@ class Modals extends Component {
       this.closeRemoveVideoModal = this.closeRemoveVideoModal.bind(this);
       this.closeAddToPlaylistModal = this.closeAddToPlaylistModal.bind(this);
       this.closeLogoutModal = this.closeLogoutModal.bind(this);
+      this.closePlayVideoModal = this.closePlayVideoModal.bind(this);
       this.updateUser = this.updateUser.bind(this);
       this.updatePass = this.updatePass.bind(this);
       this.updateEmailRegister = this.updateEmailRegister.bind(this);
@@ -90,6 +93,18 @@ class Modals extends Component {
     else {
       this.setState({showLoginModal: true});  
     }
+  }
+  
+  sendToPlay(video){
+    this.openPlayVideoModal();
+    this.setState({playVideoName: video.title});
+    this.setState({playVideoUrl: "https://www.youtube.com/embed/" + video.url});
+  }
+  
+  sendToPlayYT(video){
+    this.openPlayVideoModal();
+    this.setState({playVideoName: video.snippet.title});
+    this.setState({playVideoUrl: "https://www.youtube.com/embed/" + video.id.videoId});
   }
   
   editPlaylistNameF() {
@@ -259,6 +274,10 @@ class Modals extends Component {
      this.setState({showLogoutModal: true});
   }
   
+  openPlayVideoModal() {
+    this.setState({showPlayVideo: true});
+  }
+  
   closeRegisterModal() {
     this.setState({showRegisterModal: false});
   }
@@ -289,6 +308,10 @@ class Modals extends Component {
   
   closeLogoutModal() {
      this.setState({showLogoutModal: false});
+  }
+  
+  closePlayVideoModal() {
+    this.setState({showPlayVideo: false});
   }
   
   updateUser(evt) {
@@ -595,6 +618,16 @@ class Modals extends Component {
             </Modal.Body>
           </Modal>
           
+          <Modal dialogClassName="custom-modal" show={this.state.showPlayVideo} keyboard={false} onHide={this.closePlayVideoModal}>
+            <Modal.Header closeButton>
+              <Modal.Title>{this.state.playVideoName}</Modal.Title>
+            </Modal.Header>
+            
+            <Modal.Body className="text-center">
+             <iframe src={this.state.playVideoUrl}/>
+            </Modal.Body>
+          </Modal>
+                  
         </div>
   )}
 }
@@ -624,6 +657,10 @@ class Video extends Component{
       this.props.addVideoModal();
     }
     
+    sendToPlay() {
+      this.props.sendToPlay();
+    }
+    
     render() {
         let video = this.props.video;
         
@@ -637,7 +674,7 @@ class Video extends Component{
         return(
             <div className="video">
                 <div className="thumbnail">
-                    <a href={"https://www.youtube.com/embed/" + video.id.videoId}>
+                    <a onClick={() => this.sendToPlay()} href="#">
                         <img src={thumbnail} alt="thumbnail"/>
                     </a>
                 </div>
@@ -663,6 +700,10 @@ class PlaylistVideo extends Component{
       this.props.addRemoveVideoModal();
     }
     
+    sendToPlay() {
+      this.props.sendToPlay();
+    }
+    
     render() {
         let video = this.props.video;
         
@@ -676,7 +717,7 @@ class PlaylistVideo extends Component{
         return(
             <div className="video">
                 <div className="thumbnail">
-                    <a href={"https://www.youtube.com/embed/" + video.url}>
+                    <a onClick={() => this.sendToPlay()} href="#">
                         <img src={thumbnail} alt="thumbnail"/>
                     </a>
                 </div>
@@ -758,6 +799,10 @@ class Playlist extends Component{
       this.props.addRemoveVideoModal(id);
     }
     
+    sendToPlay(video) {
+      this.props.sendToPlay(video);
+    }
+    
     render() {
         let name = this.props.name;
         return( 
@@ -773,7 +818,7 @@ class Playlist extends Component{
                 horizontal={false}>
             {
                 this.props.videos.map(video => (
-                    <PlaylistVideo key={video.id} video={video} addRemoveVideoModal={() => this.addRemoveVideoModal(video.id)}/>)
+                    <PlaylistVideo key={video.id} video={video} addRemoveVideoModal={() => this.addRemoveVideoModal(video.id)} sendToPlay = {() => this.sendToPlay(video)}/>)
                 )
             }
             </ScrollArea>
@@ -790,6 +835,10 @@ class SearchResults extends Component{
     this.props.addVideoModalT(video);
   }
   
+  sendToPlay(video) {
+    this.props.sendToPlay(video);
+  }
+  
     render() {
           return( <ScrollArea speed={0.8}
             className="searchResults border"
@@ -797,7 +846,7 @@ class SearchResults extends Component{
             horizontal={false}> 
           {
               this.props.results.map(result => (
-                  <Video key={result.id.videoId} video={result} addVideoModal = {() => this.addVideoModal(result)}/>)
+                  <Video key={result.id.videoId} video={result} addVideoModal = {() => this.addVideoModal(result)} sendToPlay = {() => this.sendToPlay(result)}/>)
               )
           }
           </ScrollArea>
@@ -831,6 +880,8 @@ class App extends Component {
     this.addRemoveVideoModal = this.addRemoveVideoModal.bind(this);
     this.logoutF = this.logoutF.bind(this);
     this.setTitle = this.setTitle.bind(this);
+    this.sendToPlay = this.sendToPlay.bind(this);
+    this.sendToPlayYT = this.sendToPlayYT.bind(this);
   }
   
   componentDidMount() {
@@ -935,6 +986,14 @@ class App extends Component {
     this.refs.modals.showLogoutModal();
   }
   
+  sendToPlay(video) {
+    this.refs.modals.sendToPlay(video);
+  }
+  
+  sendToPlayYT(video) {
+    this.refs.modals.sendToPlayYT(video);
+  }
+  
   render() {
     return (
       <div>
@@ -951,7 +1010,7 @@ class App extends Component {
           </div>
           <List playlists={this.state.playlists} setPlaylistId={this.setVideos} openAddPlaylistModalT={this.openAddPlaylistModalF}
                       setEditPlaylistName={this.setEditPlaylistNameF} setRemovePlaylist = {this.setRemovePlaylistF}/>
-          <Playlist name={this.state.playlistName} videos={this.state.videos} addRemoveVideoModal = {this.addRemoveVideoModal}/>
+          <Playlist name={this.state.playlistName} videos={this.state.videos} addRemoveVideoModal = {this.addRemoveVideoModal} sendToPlay = {this.sendToPlay}/>
         </div>
         <div className = "col-md-6">
           <div className="searchbar space">
@@ -962,7 +1021,7 @@ class App extends Component {
               </button>
           </div>
           <div>
-              <SearchResults results={this.state.results} addVideoModalT={this.addVideoModalF}/>
+              <SearchResults results={this.state.results} addVideoModalT={this.addVideoModalF} sendToPlay = {this.sendToPlayYT}/>
           </div>
         </div>
         <Modals ref="modals" loadData={this.loadList} setVideos={this.setVideos} setTitle={this.setTitle} logout={this.logout}/>
