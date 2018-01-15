@@ -624,7 +624,7 @@ class Modals extends Component {
             </Modal.Header>
             
             <Modal.Body className="text-center">
-             <iframe src={this.state.playVideoUrl}/>
+             <iframe title = {this.state.playVideoName} src={this.state.playVideoUrl}/>
             </Modal.Body>
           </Modal>
                   
