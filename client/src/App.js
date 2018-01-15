@@ -947,7 +947,8 @@ class App extends Component {
       playlists: [],
       videos: [],
       results: [],
-      usernameTitle: ""
+      usernameTitle: "",
+      playlistName: ""
     });
   }
   
